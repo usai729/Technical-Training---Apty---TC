@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Custom Tags</title>
+</head>
+<body>
+    <test-tag value="hello" color="blue"></test-tag>
+</body>
+
+<script>
+    class Test extends HTMLElement {
+        constructor() {
+            super();
+        }
+
+        static get observedAttributes() {
+            return ['value']
+        }
+
+        render(message, color) {
+            this.innerHTML = `<p style="color: ${color}">${message}</p>`
+        }
+
+        connectedCallback() {
+            const message = this.getAttribute("value")
+            const color = this.getAttribute("color")
+
+            this.render(message, color);
+        }
+
+        attributeChangedCallback(name, newValue, newColor) {
+            this.render(newValue, newColor)
+        }
+    }
+
+    customElements.define("test-tag", Test)
+</script>
+
+</html>
